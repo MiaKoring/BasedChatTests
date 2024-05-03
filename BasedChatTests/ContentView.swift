@@ -15,11 +15,13 @@ struct ContentView: View {
     @State var resultDisplay = ""
     @State var collection: CommandCollection = CommandCollection(commands: [])
     @State var currentCommand: Command? = nil
+    //will later be used to delete a param name
     @State var currentParams: [String: Range<String.Index>] = [:]
-    @State var currentRegex: String? = "(message:)"
+    @State var currentRegex: String? = "( message:)"
     @State var commandValid: Bool = true
     @State var currentCommandLength: Int = 0
     @State var textViewHeight: CGFloat = 100
+    @State var paramDuplicates: [String] = []
     
     var body: some View {
         Text("message:")
@@ -78,6 +80,12 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+}
+
+struct CommandDisplay: View {
+    var body: some View {
+        /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
+    }
 }
 
 class Bababa: Command{
