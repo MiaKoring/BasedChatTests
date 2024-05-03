@@ -69,6 +69,8 @@ struct CommandDetailView: View {
     @State var commandValid: Bool = true
     @Binding var collection: CommandCollection
     @Binding var relevantCommands: [any Command]
+    @State var prefixWrong = false
+    
     var body: some View {
         VStack {
             if currentCommand != nil {
@@ -116,6 +118,8 @@ struct CommandDetailView: View {
         }
         .onChange(of: commandInput){
             if commandInput.first != "/" {
+                currentCommand = nil
+                relevantCommands = []
                 return
             }
             
@@ -126,9 +130,13 @@ struct CommandDetailView: View {
                 return commandInput.index(before: commandInput.endIndex)
             }()
             
-            let commandpräfix = String(commandInput[commandInput.startIndex...lastIndex])
+            let commandprefix = String(commandInput[commandInput.startIndex...lastIndex])
             
-            relevantCommands = collection.commands(for: commandpräfix, highestPermission: .none)
+            relevantCommands = collection.commands(for: commandprefix, highestPermission: .none)
+            
+            if commandprefix == "/" {
+                currentCommand = nil
+            }
             
             if !relevantCommands.contains(where: {$0.command == currentCommand?.command && $0.commandOwner == currentCommand?.commandOwner}){
                 currentCommand = nil
