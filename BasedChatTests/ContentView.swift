@@ -85,6 +85,11 @@ struct CommandDetailView: View {
                         Text("/ \(currentCommand!.command)")
                             .font(.subheadline)
                             .bold()
+                            .padding(5)
+                            .background(){
+                                RoundedRectangle(cornerRadius: 7, style: .continuous)
+                                    .fill(prefixWrong ? .red : .clear)
+                            }
                         Spacer()
                         ForEach(currentCommand!.parameters, id: \.self){ param in
                             Text(param.name)
@@ -136,6 +141,12 @@ struct CommandDetailView: View {
             
             if commandprefix == "/" {
                 currentCommand = nil
+            }
+            else if currentCommand != nil && commandprefix.dropFirst() != currentCommand!.command {
+                prefixWrong = true
+            }
+            else {
+                prefixWrong = false
             }
             
             if !relevantCommands.contains(where: {$0.command == currentCommand?.command && $0.commandOwner == currentCommand?.commandOwner}){
